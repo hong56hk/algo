@@ -1,19 +1,18 @@
 #!/bin/python3
 
+'''
+Complete the 'authEvents' function below.
+
+The function is expected to return an INTEGER_ARRAY.
+The function accepts 2D_STRING_ARRAY events as parameter.
+'''
+
 import math
 import os
 import random
 import re
 import sys
 
-
-
-#
-# Complete the 'authEvents' function below.
-#
-# The function is expected to return an INTEGER_ARRAY.
-# The function accepts 2D_STRING_ARRAY events as parameter.
-#
 
 def hash(pwd):
     hash_v = 0
