@@ -10,14 +10,7 @@
       "request": "launch",
       "program": "${file}",
       "console": "integratedTerminal"
-    },
-    {
-      "name": "Console",
-      "type": "python",
-      "request": "launch",
-      "program": "${file}",
-      "console": "integratedTerminal"
-      
+
     }
   ]
 }
