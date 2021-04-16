@@ -28,8 +28,8 @@ def edit_distance(s1, s2):
       sub_cost = 0 if s1[j-1] == s2[i-1] else 1
       edit_dist_table[i][j] = min(
         edit_dist_table[i-1][j] + 1,                # deletion cost
-        edit_dist_table[i][j-1] + 1,                # insert cose
-        edit_dist_table[i-1][j-1] + sub_cost)       # substitution cose
+        edit_dist_table[i][j-1] + 1,                # insert cost
+        edit_dist_table[i-1][j-1] + sub_cost)       # substitution cost
       
   return edit_dist_table[h-1][w-1]
 
