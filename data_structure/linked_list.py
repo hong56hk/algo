@@ -6,7 +6,7 @@ A thread not-safe linked-list with minimal functions
 
 '''
 
-class node():
+class Node():
   def __init__(self, value):
     self.value = value
     self.prev = None
@@ -15,7 +15,7 @@ class node():
   def __str__(self):
     return str(self.value)
 
-class linklist():
+class LinkedList():
   def __init__(self, value=None):
     self.first = None
     self.last = None
@@ -46,7 +46,7 @@ class linklist():
     return None
 
   def push(self, value):
-    n = node(value)
+    n = Node(value)
     if self.first:
       n.prev = self.last
       self.last.next = n
@@ -80,7 +80,7 @@ class linklist():
     return n.value
 
   def insert(self, value, pos=0):
-    n = node(value)
+    n = Node(value)
     if self.size == 0 or pos >= self.size:
       self.push(value)
     else:
@@ -101,7 +101,7 @@ class linklist():
 
 
 if __name__ == '__main__':
-  l = linklist()
+  l = LinkedList()
   l.push("b")
   l.push("c")
   l.insert("a")
