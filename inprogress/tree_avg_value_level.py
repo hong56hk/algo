@@ -1,6 +1,15 @@
 """
 find the average of a given binary tree on each level
 
+    4
+   / \
+  7   9
+ / \   \
+10  2   6
+     \
+      6
+       \
+        2
 """
 from queue import Queue
 
@@ -24,8 +33,8 @@ root.left.right.right.left = Node(2)
 root.right.right = Node(6)
 
 
-def average_value(node_root:Node):
-  count_dict = {}
+def bfs(node_root:Node):
+  data = {}
   q = Queue()
   q.put({
     "n": node_root,
@@ -36,10 +45,10 @@ def average_value(node_root:Node):
     child = q.get()
     lvl = child['lvl']
     node = child['n']
-    if lvl not in count_dict.keys():
-      count_dict[lvl] = [node.val]
+    if lvl not in data.keys():
+      data[lvl] = [node.val]
     else:
-      count_dict[lvl].append(node.val)
+      data[lvl].append(node.val)
 
     if node.left:
       q.put({
@@ -51,7 +60,23 @@ def average_value(node_root:Node):
         "n": node.right,
         "lvl": lvl + 1
       })
-  
-  print(count_dict)
 
-average_value(root)
+  print(data)
+
+def dfs(node_root:Node):
+  data = []
+  s = []
+  s.append(node_root)
+
+  while len(s) > 0:
+    node = s.pop()
+    data.append(node.val)
+
+    if node.right:
+      s.append(node.right)
+    if node.left:
+      s.append(node.left)
+  print(data)      
+
+bfs(root)
+dfs(root)
