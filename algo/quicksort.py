@@ -49,7 +49,7 @@ if __name__ == '__main__':
     tc1 = tc.copy()
     tc2 = tc.copy()
     
-    mergesort(tc1)
+    quicksort(tc1)
     
     tc2.sort()
     if tc2 != tc1:
