@@ -44,20 +44,20 @@ if __name__ == '__main__':
     [2,1,3,7,6,4],
     [1,556,24,5,35,4,6,7,8,1,235],
   ]
-  
+
   for i in range(len(testcases)):
     tc = testcases[i]
     tc1 = tc.copy()
     tc1.sort()
-    
+
     for pos in range(len(tc)):
       ans = quickselect(tc1, pos)
-      
+
       if ans != tc1[pos]:
         print("incorrect {}".format(tc))
         print("expected {}".format(tc1[pos]))
         print("actual {}".format(ans))
       else:
         print("testcase {}-{} passed".format(i, pos))
-    
-    
+
+

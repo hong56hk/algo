@@ -23,13 +23,13 @@ def partition(arr, s, e):
 
 def quicksort(arr, s=0, e=None):
   e = len(arr)-1 if e is None else e
-  
+
   if s < e:
     p = partition(arr, s, e)
 
     quicksort(arr, s, p-1)
     quicksort(arr, p+1, e)
-  
+
 
 
 if __name__ == '__main__':
@@ -43,14 +43,14 @@ if __name__ == '__main__':
     [2,1,3,7,6,4],
     [1,556,24,5,35,4,6,7,8,1,235],
   ]
-  
+
   for i in range(len(testcases)):
     tc = testcases[i]
     tc1 = tc.copy()
     tc2 = tc.copy()
-    
+
     quicksort(tc1)
-    
+
     tc2.sort()
     if tc2 != tc1:
       print("incorrect {}".format(tc))
@@ -58,5 +58,5 @@ if __name__ == '__main__':
       print("actual {}".format(tc1))
     else:
       print("testcase [{}] passed".format(i))
-  
-  
+
+

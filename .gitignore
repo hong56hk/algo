@@ -1,0 +1,10 @@
+# ignore iamges
+*.jpg
+*.png
+
+# ignore log files
+log/*
+
+# ignore input files
+*.in
+*.txt

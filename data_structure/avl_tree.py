@@ -2,14 +2,14 @@
 '''
 An implementation of AVL tree
 
- - An AVL (Adelson-Velskii and Landis) tree is a binary search tree with a 
+ - An AVL (Adelson-Velskii and Landis) tree is a binary search tree with a
    balance condition.
 
- - An AVL tree is identical to a binary search tree, 
-   except that for every node in the tree, the height of the left and right 
-   subtrees can differ by at most 1. 
+ - An AVL tree is identical to a binary search tree,
+   except that for every node in the tree, the height of the left and right
+   subtrees can differ by at most 1.
 
- - With an AVL tree, all the tree operations can be performed in O(log n) time, 
+ - With an AVL tree, all the tree operations can be performed in O(log n) time,
    except insertion.
 
 
@@ -26,29 +26,29 @@ class Node():
     self.right = None
     self.left_count = 0
     self.right_count = 0
-  
+
   def __str__(self):
     return "{}: {}".format(self.key, self.value)
 
 class AVLTree():
   def __init__(self):
     self.root:Node = None
-    
+
   def __str__(self):
-    s = ''
+    s = 'root: {}\n'.format(self.root.key)
     q = deque()
     q.append(self.root)
     while q:
       node = q.popleft()
 
-      s += '({},{}): left: {}, right: {}\n'.format(node.key, node.value, 
-      node.left.key if node.left else '', 
+      s += '({},{}): left: {}, right: {}\n'.format(node.key, node.value,
+      node.left.key if node.left else '',
       node.right.key if node.right else '')
       if node.left:
         q.append(node.left)
       if node.right:
         q.append(node.right)
-      
+
     return s
 
   def inorder(self, n=None):
@@ -61,7 +61,7 @@ class AVLTree():
     result_arr.append((n.key, n.value))
     if n.right:
       result_arr += self.inorder(n.right)
-    
+
     return result_arr
 
   def size(self):
@@ -71,7 +71,7 @@ class AVLTree():
   def llrotate(self, prev_root):
     new_root = prev_root.left
     new_root.parent = prev_root.parent
-    
+
     if prev_root.parent:
       if prev_root.parent.left is prev_root:
         prev_root.parent.left = new_root
@@ -84,10 +84,10 @@ class AVLTree():
     prev_root.left = new_root.right
     prev_root.left_count = prev_root.left.left_count + prev_root.left.right_count + 1 if prev_root.left else 1
     new_root.right = prev_root
-    
+
     new_root.right_count = new_root.right.left_count + new_root.right.right_count + 1
     prev_root.left_count = 0
-  
+
   # single rotation Right-right
   def rrrotate(self, prev_root):
     new_root = prev_root.right
@@ -105,7 +105,7 @@ class AVLTree():
     prev_root.right = new_root.left
     prev_root.right_count = prev_root.right.left_count + prev_root.right.right_count + 1 if prev_root.right else 1
     new_root.left = prev_root
-    
+
     new_root.left_count = new_root.left.left_count + new_root.left.right_count + 1
     prev_root.right_count = 0
 
@@ -164,7 +164,7 @@ class AVLTree():
 
     new_root.left_count = new_root.left.left_count + new_root.left.right_count + 1
     new_root.right_count = new_root.right.left_count + new_root.right.right_count + 1
-    
+
   # check the balance from newly added node
   def balance(self, node):
     c = node
@@ -173,15 +173,15 @@ class AVLTree():
 
     while p is not None and pp is not None:
       if pp.left_count > pp.right_count + 1:
-        if c.key < p.key:  
+        if c.key < p.key:
           self.llrotate(pp)    # Left-Left rotation
-        else: 
+        else:
           self.lrrotate(pp)   # Left-Right rotation
         break
       elif pp.right_count > pp.left_count + 1:
-        if c.key > p.key: 
+        if c.key > p.key:
           self.rrrotate(pp)    # Right-Right rotation
-        else: 
+        else:
           self.rlrotate(pp)   # Right-Left rotation
         break
       c = c.parent
@@ -238,23 +238,63 @@ class AVLTree():
       # end of while
       self.balance(node)
       return node
-    
+
 
   def find(self, key) -> Node:
     node:Node = self.root
-    while node.key != key:
-      if node.key <= key:
+    while True:
+      if node.key < key:
         node = node.left
-      else:
+      elif node.key > key:
         node = node.right
+      else:
+        return node
 
-    if node.key == key:
-      return node
+  def left_most(self) -> Node:
+    node = self.root
+    while node.left:
+      node = node.left
+    return node
+
+  def right_most(self) -> Node:
+    node = self.root
+    while node.right:
+      node = node.right
+    return node
+
+  def delete(self, key, root=None):
+    if root is None:
+      return root
+
+    if key < root.key:
+      root.left = self.delete(key, root.left)
+    elif key > root.key:
+      root.right = self.delete(key, root.right)
     else:
-      return None
+      if root.left is None or root.right is None:
+        temp = root.left if root.left else root.right
+        # no child
+        if temp is None:
+          root = None
+        else:
+          root = temp
+      else:
+        temp = self.left_most(root.right)
+        root.key = temp.key
+        root.right = self.delete(temp.key, root.right)
 
-  def delete(self, key):
-    pass
+    # if the tree had only one node
+    if root is None:
+      return root
+
+    # update the height of the current node
+    root.left_count = root.left.left_count + 1
+    root.right_count = root.right.right_count + 1
+
+    self.balance(root)
+    return root
+
+
 
 
 if __name__ == '__main__':
@@ -331,4 +371,21 @@ if __name__ == '__main__':
   t.insert(7, None)
   print(t)
 
-  
+  print("--- 7. test delete")
+  t = AVLTree()
+  t.insert(10, None)
+  t.insert(9, None)
+  t.insert(2, None)
+  t.insert(3, None)
+  print(t)
+  t.insert(4, None)
+  print(t)
+  t.insert(5, None)
+  print(t)
+  t.insert(8, None)
+  print(t)
+  t.insert(7, None)
+  print(t)
+  t.insert(6, None)
+  print(t)
+
