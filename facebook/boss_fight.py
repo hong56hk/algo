@@ -13,29 +13,36 @@ def getMaxDamageDealt_bf(N: int, H: List[int], D: List[int], B: int) -> float:
   return max_dmg / B
 
 def getMaxDamageDealt(N: int, H: List[int], D: List[int], B: int) -> float:
-  best_i = 0
-  best_j = 0
+  best_warrier = -1
+  second_warrier = -1
   
   max_dmg = 0
+  second_dmg = 0
 
   # find the best attacker
   for wi in range(N):
     dmg = H[wi] * D[wi]
-    if dmg > max_dmg: # stand at the back
-      max_dmg = dmg
-      best_j = wi
+    if dmg >= max_dmg: # stand at the back
+      second_warrier = best_warrier
+      second_dmg = max_dmg
 
-  for wi in range(N):
-    dmg = H[wi] * D[wi] + (H[wi] + H[best_j]) * D[best_j]
-    if dmg > max_dmg and wi != best_j:
-      best_i = wi
+      best_warrier = wi
+      max_dmg = dmg
+
+    if second_warrier == -1 and wi != best_warrier and dmg > second_dmg:  
+      second_warrier = wi
+      second_dmg = dmg
+
+  total_dmg_1 = H[best_warrier] * D[best_warrier] + (H[best_warrier] + H[second_warrier]) * D[second_warrier]
+  total_dmg_2 = H[second_warrier] * D[second_warrier] + (H[best_warrier] + H[second_warrier]) * D[best_warrier]
   
-  
-  print("best i:{} j:{}".format(best_i, best_j))
-  total_dmg = (H[best_i] * D[best_i] + (H[best_i] + H[best_j]) * D[best_j]) / B
+  total_dmg = max(total_dmg_1, total_dmg_2) / B
   return total_dmg
 
 if __name__ == "__main__":
-  print(getMaxDamageDealt(3, [2,1,4], [3,1,2], 4))
-  print(getMaxDamageDealt(4, [1,1,2,100], [1,2,1,3], 8))
+  # print(getMaxDamageDealt(3, [2,1,4], [3,1,2], 4))
+  print(getMaxDamageDealt(4,    [1,1,2,100], [1,2,1,3], 8))
+  print(getMaxDamageDealt_bf(4, [1,1,2,100], [1,2,1,3], 8))
+
   print(getMaxDamageDealt(4, [1,1,2,3], [1,2,1,100], 8))
+  print(getMaxDamageDealt_bf(4, [1,1,2,3], [1,2,1,100], 8))
